@@ -1,11 +1,626 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>无眠社</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="无眠社的独立游戏主页，展示正在制作和已经发布的小游戏。">
+  <title>无眠社 | 独立游戏主页</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101114;
+      --panel: #181b21;
+      --panel-soft: #20242d;
+      --text: #f3efe7;
+      --muted: #b9b1a6;
+      --line: rgba(255, 255, 255, 0.12);
+      --cyan: #4ed7c6;
+      --amber: #ffc65b;
+      --coral: #ff6f61;
+      --green: #98d86b;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-shell {
+      min-height: 100vh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(78, 215, 198, 0.16), transparent 28%),
+        radial-gradient(circle at 84% 10%, rgba(255, 198, 91, 0.14), transparent 30%),
+        linear-gradient(180deg, #111216 0%, #17191f 45%, #101114 100%);
+    }
+
+    .nav {
+      position: fixed;
+      z-index: 20;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px clamp(20px, 5vw, 72px);
+      background: rgba(16, 17, 20, 0.78);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: linear-gradient(135deg, #252a33, #15171d);
+      color: var(--cyan);
+      font-size: 18px;
+      border-radius: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 92vh;
+      align-items: end;
+      padding: 120px clamp(20px, 5vw, 72px) 52px;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      position: absolute;
+      inset: 72px clamp(14px, 3vw, 44px) 0;
+      z-index: -2;
+      content: "";
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        linear-gradient(90deg, rgba(16, 17, 20, 0.28), rgba(16, 17, 20, 0.62)),
+        repeating-linear-gradient(90deg, transparent 0 78px, rgba(255, 255, 255, 0.045) 79px 80px),
+        repeating-linear-gradient(0deg, transparent 0 78px, rgba(255, 255, 255, 0.045) 79px 80px),
+        linear-gradient(145deg, #26313b 0%, #17181e 42%, #29201e 100%);
+      border-radius: 0 0 20px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      position: absolute;
+      inset: auto clamp(28px, 6vw, 96px) 20px auto;
+      z-index: -1;
+      width: min(46vw, 560px);
+      aspect-ratio: 16 / 10;
+      content: "";
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0)),
+        radial-gradient(circle at 18% 72%, var(--cyan) 0 3%, transparent 3.3%),
+        radial-gradient(circle at 72% 33%, var(--amber) 0 4%, transparent 4.4%),
+        linear-gradient(150deg, rgba(78, 215, 198, 0.18), rgba(255, 111, 97, 0.12)),
+        #181b21;
+      border-radius: 8px;
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.36);
+      transform: rotate(-2deg);
+    }
+
+    .hero-content {
+      display: grid;
+      max-width: 820px;
+      gap: 24px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: 8px 12px;
+      border: 1px solid rgba(78, 215, 198, 0.35);
+      background: rgba(78, 215, 198, 0.08);
+      color: #bff7ef;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 999px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(48px, 10vw, 116px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: var(--text);
+      color: #121317;
+      font-weight: 800;
+      border-radius: 8px;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+    }
+
+    .section {
+      padding: 56px clamp(20px, 5vw, 72px) 80px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      max-width: 1180px;
+      margin: 0 auto 24px;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 46px);
+      letter-spacing: 0;
+    }
+
+    .section-note {
+      max-width: 420px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .game-card {
+      display: grid;
+      min-height: 560px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      box-shadow: 0 18px 54px rgba(0, 0, 0, 0.22);
+    }
+
+    .game-preview {
+      position: relative;
+      min-height: 300px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background: #1d2027;
+    }
+
+    .game-preview::before,
+    .game-preview::after {
+      position: absolute;
+      content: "";
+    }
+
+    .game-preview.adventure {
+      background:
+        linear-gradient(180deg, rgba(22, 25, 31, 0) 58%, rgba(22, 25, 31, 0.9) 100%),
+        linear-gradient(135deg, #1f4c5a 0%, #1a2430 52%, #3a2520 100%);
+    }
+
+    .game-preview.adventure::before {
+      left: 10%;
+      right: 10%;
+      bottom: 16%;
+      height: 26%;
+      background:
+        linear-gradient(90deg, transparent 0 7%, rgba(255, 198, 91, 0.85) 7% 11%, transparent 11% 21%, rgba(78, 215, 198, 0.78) 21% 25%, transparent 25%),
+        linear-gradient(180deg, #34424a, #1b2026);
+      clip-path: polygon(0 72%, 14% 38%, 26% 62%, 42% 18%, 58% 66%, 72% 32%, 100% 70%, 100% 100%, 0 100%);
+    }
+
+    .game-preview.adventure::after {
+      left: 12%;
+      bottom: 14%;
+      width: 56px;
+      height: 76px;
+      border-radius: 14px 14px 6px 6px;
+      background: linear-gradient(180deg, #f3efe7 0 34%, var(--coral) 34% 100%);
+      box-shadow: 190px -52px 0 -18px var(--amber), 260px -4px 0 -24px var(--cyan);
+    }
+
+    .game-preview.arcade {
+      background:
+        linear-gradient(180deg, rgba(22, 25, 31, 0) 58%, rgba(22, 25, 31, 0.9) 100%),
+        linear-gradient(145deg, #322b55 0%, #18212a 48%, #203d35 100%);
+    }
+
+    .game-preview.arcade::before {
+      inset: 18%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background:
+        linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, 0.18) 49% 51%, transparent 52%),
+        linear-gradient(0deg, transparent 48%, rgba(255, 255, 255, 0.18) 49% 51%, transparent 52%);
+      transform: rotate(8deg);
+    }
+
+    .game-preview.arcade::after {
+      left: 20%;
+      top: 24%;
+      width: 42px;
+      height: 42px;
+      background: var(--amber);
+      border-radius: 50%;
+      box-shadow: 126px 74px 0 10px var(--cyan), 248px 18px 0 -6px var(--coral), 320px 112px 0 2px var(--green);
+    }
+
+    .game-body {
+      display: grid;
+      align-content: space-between;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    .game-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      padding: 6px 9px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-size: 12px;
+      border-radius: 999px;
+    }
+
+    .game-body h3 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .game-body p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .game-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .status {
+      color: #cdeec0;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .link {
+      color: var(--cyan);
+      font-weight: 800;
+    }
+
+    .about-band {
+      border-top: 1px solid var(--line);
+      background: #15171c;
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 56px clamp(20px, 5vw, 72px);
+    }
+
+    .about-inner h2 {
+      margin: 0;
+      font-size: clamp(26px, 4vw, 42px);
+      letter-spacing: 0;
+    }
+
+    .about-inner p {
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      border-radius: 8px;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--text);
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer {
+      padding: 24px clamp(20px, 5vw, 72px);
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 860px) {
+      .nav {
+        position: sticky;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+
+      .hero {
+        min-height: 86vh;
+        padding-top: 76px;
+      }
+
+      .hero::before {
+        inset: 64px 12px 0;
+      }
+
+      .hero::after {
+        right: 22px;
+        bottom: 34%;
+        width: 62vw;
+        opacity: 0.5;
+      }
+
+      .section-head,
+      .about-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: grid;
+      }
+
+      .game-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .hero {
+        padding-top: 92px;
+      }
+
+      .hero-actions,
+      .game-footer {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .button,
+      .link {
+        width: 100%;
+      }
+
+      .button {
+        justify-content: center;
+      }
+
+      .game-card {
+        min-height: auto;
+      }
+
+      .game-preview {
+        min-height: 230px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>欢迎来到 无眠社！</h1>
-  <p>这是我的 GitHub Pages 网站。</p>
+  <div class="site-shell">
+    <header class="nav" aria-label="主导航">
+      <a class="brand" href="#top" aria-label="无眠社首页">
+        <span class="brand-mark">S</span>
+        <span>无眠社</span>
+      </a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a href="#games">游戏</a>
+        <a href="#about">关于</a>
+        <a href="https://github.com/Harunogawa" target="_blank" rel="noreferrer">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <div class="eyebrow">Independent Game Studio</div>
+          <h1 id="hero-title">无眠社</h1>
+          <p class="hero-copy">这里收纳正在打磨的小游戏：轻量、直接、有一点夜里灵感冒出来的锋利感。先从两款作品开始，把玩法、气质和入口都放在最显眼的位置。</p>
+          <div class="hero-actions">
+            <a class="button" href="#games">查看游戏</a>
+            <a class="button secondary" href="https://github.com/Harunogawa/Sleepless.github.io" target="_blank" rel="noreferrer">项目仓库</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="games" aria-labelledby="games-title">
+        <div class="section-head">
+          <h2 id="games-title">游戏展示</h2>
+          <p class="section-note">当前先保留两款游戏位。把标题、简介、标签和链接换成你的真实内容后，这个首页就能直接作为发布入口使用。</p>
+        </div>
+
+        <div class="game-grid">
+          <article class="game-card">
+            <div class="game-preview adventure" aria-hidden="true"></div>
+            <div class="game-body">
+              <div>
+                <div class="game-meta">
+                  <span class="tag">冒险</span>
+                  <span class="tag">单人</span>
+                  <span class="tag">Web / PC</span>
+                </div>
+                <h3>游戏一</h3>
+                <p>适合放置你的主打作品：一句话说清核心玩法，再补一行氛围或挑战点。建议这里优先展示最能代表你风格的游戏。</p>
+              </div>
+              <div class="game-footer">
+                <span class="status">展示位已就绪</span>
+                <a class="link" href="#" aria-label="进入游戏一页面">进入游戏</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <div class="game-preview arcade" aria-hidden="true"></div>
+            <div class="game-body">
+              <div>
+                <div class="game-meta">
+                  <span class="tag">街机</span>
+                  <span class="tag">快节奏</span>
+                  <span class="tag">开发中</span>
+                </div>
+                <h3>游戏二</h3>
+                <p>适合放置另一款作品：突出节奏、目标和可玩特色。等有截图后，把上方预览图替换成真实游戏画面会更有冲击力。</p>
+              </div>
+              <div class="game-footer">
+                <span class="status">等待链接</span>
+                <a class="link" href="#" aria-label="进入游戏二页面">进入游戏</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="about-band" id="about" aria-labelledby="about-title">
+        <div class="about-inner">
+          <div>
+            <h2 id="about-title">把作品放到前台</h2>
+            <p>首页的信息层级围绕游戏本身设计：首屏建立品牌印象，第二屏立即展示作品。后续增加第三、第四款游戏时，只需要复制一张游戏卡片。</p>
+          </div>
+          <div class="stats" aria-label="站点信息">
+            <div class="stat">
+              <strong>2</strong>
+              <span>当前展示游戏</span>
+            </div>
+            <div class="stat">
+              <strong>1</strong>
+              <span>静态首页文件</span>
+            </div>
+            <div class="stat">
+              <strong>UTF-8</strong>
+              <span>中文编码已修复</span>
+            </div>
+            <div class="stat">
+              <strong>GitHub</strong>
+              <span>Pages 可直接部署</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © 2026 无眠社. Built for GitHub Pages.
+    </footer>
+  </div>
 </body>
 </html>
